@@ -1,0 +1,168 @@
+{
+  "name": "@digicroz/js-kit",
+  "version": "1.0.0",
+  "description": "Modern TypeScript utility library with tree-shaking support - Array, String, Number, Sleep, and Time utilities for JavaScript and TypeScript projects",
+  "keywords": [
+    "typescript",
+    "javascript",
+    "utilities",
+    "utility-library",
+    "tree-shaking",
+    "esm",
+    "array-utils",
+    "string-utils",
+    "number-utils",
+    "sleep",
+    "time-utils",
+    "modern-js",
+    "typescript-library",
+    "js-kit",
+    "functional",
+    "chunking",
+    "capitalize",
+    "clamp",
+    "async-sleep",
+    "promise-utils",
+    "browser",
+    "universal",
+    "environment-detection",
+    "cross-platform"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "react-native": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "string": [
+        "./dist/string/index.d.ts"
+      ],
+      "array": [
+        "./dist/array/index.d.ts"
+      ],
+      "number": [
+        "./dist/number/index.d.ts"
+      ],
+      "sleep": [
+        "./dist/sleep/index.d.ts"
+      ],
+      "time": [
+        "./dist/time/index.d.ts"
+      ],
+      "utils": [
+        "./dist/utils/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./dist/index.js",
+      "browser": "./dist/index.js",
+      "module": "./dist/index.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./string": {
+      "types": "./dist/string/index.d.ts",
+      "react-native": "./dist/string/index.js",
+      "module": "./dist/string/index.js",
+      "import": "./dist/string/index.js",
+      "default": "./dist/string/index.js",
+      "require": "./dist/string/index.cjs"
+    },
+    "./array": {
+      "types": "./dist/array/index.d.ts",
+      "react-native": "./dist/array/index.js",
+      "module": "./dist/array/index.js",
+      "import": "./dist/array/index.js",
+      "default": "./dist/array/index.js",
+      "require": "./dist/array/index.cjs"
+    },
+    "./number": {
+      "types": "./dist/number/index.d.ts",
+      "react-native": "./dist/number/index.js",
+      "module": "./dist/number/index.js",
+      "import": "./dist/number/index.js",
+      "default": "./dist/number/index.js",
+      "require": "./dist/number/index.cjs"
+    },
+    "./sleep": {
+      "types": "./dist/sleep/index.d.ts",
+      "react-native": "./dist/sleep/index.js",
+      "module": "./dist/sleep/index.js",
+      "import": "./dist/sleep/index.js",
+      "default": "./dist/sleep/index.js",
+      "require": "./dist/sleep/index.cjs"
+    },
+    "./time": {
+      "types": "./dist/time/index.d.ts",
+      "react-native": "./dist/time/index.js",
+      "module": "./dist/time/index.js",
+      "import": "./dist/time/index.js",
+      "default": "./dist/time/index.js",
+      "require": "./dist/time/index.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "react-native": "./dist/utils/index.js",
+      "module": "./dist/utils/index.js",
+      "import": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "react-native": "./dist/types/index.js",
+      "module": "./dist/types/index.js",
+      "import": "./dist/types/index.js",
+      "default": "./dist/types/index.js",
+      "require": "./dist/types/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digicroz/js-kit.git"
+  },
+  "homepage": "https://github.com/digicroz/js-kit#readme",
+  "bugs": {
+    "url": "https://github.com/digicroz/js-kit/issues"
+  },
+  "author": {
+    "name": "Adarsh Hatkar",
+    "url": "https://github.com/AdarshHatkar"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "npx rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "release:patch": "npm version patch",
+    "postversion": "git push && git push --tags && npm publish",
+    "link": "npm run build && npm link",
+    "unlink": "npm unlink -g @digicroz/js-kit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.4.0"
+  }
+}

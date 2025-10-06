@@ -45,12 +45,49 @@ export function convertToSeconds(
   )
 }
 
-export const getUnixTimestampMs = (): number => {
-  return Date.now()
+/**
+ * Gets Unix timestamp in milliseconds
+ * @param date - Optional Date object, date string, or timestamp. If not provided, uses current date
+ * @returns Unix timestamp in milliseconds
+ */
+export const getUnixTimestampMs = (date?: Date | string | number): number => {
+  if (date === undefined) {
+    return Date.now()
+  }
+
+  if (typeof date === "number") {
+    const testDate = new Date(date)
+    if (isNaN(testDate.getTime())) {
+      throw new Error("Invalid timestamp provided")
+    }
+
+    // Timestamps should be positive and not too far in the future
+    const now = Date.now()
+    const hundredYearsFromNow = now + 100 * 365 * 24 * 60 * 60 * 1000 // 100 years
+
+    if (date < 0 || date > hundredYearsFromNow) {
+      throw new Error("Timestamp is outside valid range")
+    }
+
+    return date
+  }
+
+  const dateObj = new Date(date)
+
+  if (isNaN(dateObj.getTime())) {
+    throw new Error("Invalid date provided")
+  }
+
+  return dateObj.getTime()
 }
 
-export const getUnixTimestamp = (): number => {
-  return Math.floor(getUnixTimestampMs() / 1000)
+/**
+ * Gets Unix timestamp in seconds
+ * @param date - Optional Date object, date string, or timestamp. If not provided, uses current date
+ * @returns Unix timestamp in seconds
+ */
+export const getUnixTimestamp = (date?: Date | string | number): number => {
+  return Math.floor(getUnixTimestampMs(date) / 1000)
 }
 
 /**

@@ -1,4 +1,4 @@
-import { monotonicFactory } from "ulidx"
+import { monotonicFactory, decodeTime } from "ulidx"
 
 // Create a monotonic ULID generator (ensures IDs are always increasing)
 const ulid = monotonicFactory()
@@ -6,13 +6,13 @@ const ulid = monotonicFactory()
 /**
  * Generate a ULID (Universally Unique Lexicographically Sortable ID)
  * Works in Node.js, Web, and React Native.
- * 
+ *
  * Uses monotonic mode by default - ensures IDs are always increasing,
  * even if the system clock goes backwards.
  *
  * @param prefix Optional string to prefix before the ID, e.g. "user" → "user_01JF..."
  */
-export function generateId(prefix?: string): string {
+export function generateUlid(prefix?: string): string {
   const id = ulid()
   return prefix ? `${prefix}_${id}` : id
 }
@@ -75,4 +75,67 @@ export function binaryToUlid(bytes: Uint8Array): string {
 
   // Trim to 26 chars
   return id.substring(0, 26)
+}
+
+/**
+ * Validate if a string is a valid ULID format.
+ * Checks for 26 characters and valid Crockford Base32 encoding.
+ *
+ * @param id The string to validate
+ * @returns true if valid ULID, false otherwise
+ */
+export function isValidUlid(id: string): boolean {
+  if (!id || typeof id !== "string" || id.length !== 26) return false
+
+  const crockford32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+  for (const char of id) {
+    if (crockford32.indexOf(char.toUpperCase()) === -1) return false
+  }
+
+  return true
+}
+
+/**
+ * Decode timestamp from a ULID string.
+ * Uses the ulidx decodeTime function.
+ *
+ * @param id The ULID string
+ * @returns Timestamp in milliseconds since Unix epoch
+ * @throws Error if invalid ULID
+ */
+export function decodeTimeFromUlid(id: string): number {
+  if (!isValidUlid(id)) throw new Error("Invalid ULID format")
+  return decodeTime(id)
+}
+
+/**
+ * Get the age of a ULID in milliseconds.
+ *
+ * @param id The ULID string
+ * @returns Age in milliseconds
+ * @throws Error if invalid ULID
+ */
+export function getUlidAge(id: string): number {
+  const timestamp = decodeTimeFromUlid(id)
+  return Date.now() - timestamp
+}
+
+/**
+ * Parse a ULID and extract all its components.
+ *
+ * @param id The ULID string
+ * @returns Object containing timestamp (ms), timestampSeconds, and age (ms)
+ * @throws Error if invalid ULID
+ */
+export function parseUlid(id: string): {
+  timestamp: number
+  timestampSeconds: number
+  age: number
+} {
+  const timestamp = decodeTimeFromUlid(id)
+  return {
+    timestamp,
+    timestampSeconds: Math.floor(timestamp / 1000),
+    age: Date.now() - timestamp,
+  }
 }

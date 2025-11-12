@@ -164,5 +164,8 @@
     "@types/node": "^24.3.0",
     "tsup": "^8.5.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "ulidx": "^2.4.1"
   }
 }

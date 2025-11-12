@@ -1,8 +1,14 @@
-import { ulid, encodeTime, encodeRandom, decodeTime } from "ulidx"
+import { monotonicFactory } from "ulidx"
+
+// Create a monotonic ULID generator (ensures IDs are always increasing)
+const ulid = monotonicFactory()
 
 /**
  * Generate a ULID (Universally Unique Lexicographically Sortable ID)
  * Works in Node.js, Web, and React Native.
+ * 
+ * Uses monotonic mode by default - ensures IDs are always increasing,
+ * even if the system clock goes backwards.
  *
  * @param prefix Optional string to prefix before the ID, e.g. "user" → "user_01JF..."
  */

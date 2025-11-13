@@ -11,7 +11,7 @@ export function isNodeEnvironment(): boolean {
     typeof process !== "undefined" &&
     process.versions != null &&
     process.versions.node != null
-  )
+  );
 }
 
 /**
@@ -19,7 +19,7 @@ export function isNodeEnvironment(): boolean {
  * @returns true if running in a browser, false otherwise
  */
 export function isBrowserEnvironment(): boolean {
-  return typeof window !== "undefined" && typeof document !== "undefined"
+  return typeof window !== "undefined" && typeof document !== "undefined";
 }
 
 /**
@@ -30,7 +30,7 @@ export function isWebWorkerEnvironment(): boolean {
   return (
     typeof (globalThis as any).importScripts === "function" &&
     typeof window === "undefined"
-  )
+  );
 }
 
 /**
@@ -38,10 +38,10 @@ export function isWebWorkerEnvironment(): boolean {
  * @returns 'node' | 'browser' | 'webworker' | 'unknown'
  */
 export function getEnvironment(): "node" | "browser" | "webworker" | "unknown" {
-  if (isNodeEnvironment()) return "node"
-  if (isBrowserEnvironment()) return "browser"
-  if (isWebWorkerEnvironment()) return "webworker"
-  return "unknown"
+  if (isNodeEnvironment()) return "node";
+  if (isBrowserEnvironment()) return "browser";
+  if (isWebWorkerEnvironment()) return "webworker";
+  return "unknown";
 }
 
 /**
@@ -53,8 +53,8 @@ export class EnvironmentError extends Error {
     public readonly requiredEnvironment: string,
     public readonly currentEnvironment: string
   ) {
-    super(message)
-    this.name = "EnvironmentError"
+    super(message);
+    this.name = "EnvironmentError";
   }
 }
 
@@ -68,7 +68,7 @@ export function assertNodeEnvironment(): void {
       "This functionality requires Node.js environment",
       "node",
       getEnvironment()
-    )
+    );
   }
 }
 
@@ -82,19 +82,6 @@ export function assertBrowserEnvironment(): void {
       "This functionality requires browser environment",
       "browser",
       getEnvironment()
-    )
+    );
   }
 }
-
-/**
- * ULID generation and utilities
- */
-export {
-  generateUlid,
-  isValidUlid,
-  decodeTimeFromUlid,
-  getUlidAge,
-  parseUlid,
-  ulidToBinary,
-  binaryToUlid,
-} from "./ulid"

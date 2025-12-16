@@ -19,3 +19,6 @@ export * from "./utils"
 
 // Type utilities
 export * from "./types"
+
+// Enum utilities
+export * from "./enum"

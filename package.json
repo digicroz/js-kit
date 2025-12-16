@@ -56,6 +56,9 @@
       ],
       "types": [
         "./dist/types/index.d.ts"
+      ],
+      "enum": [
+        "./dist/enum/index.d.ts"
       ]
     }
   },
@@ -125,6 +128,14 @@
       "import": "./dist/types/index.js",
       "default": "./dist/types/index.js",
       "require": "./dist/types/index.cjs"
+    },
+    "./enum": {
+      "types": "./dist/enum/index.d.ts",
+      "react-native": "./dist/enum/index.js",
+      "module": "./dist/enum/index.js",
+      "import": "./dist/enum/index.js",
+      "default": "./dist/enum/index.js",
+      "require": "./dist/enum/index.cjs"
     }
   },
   "files": [

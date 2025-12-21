@@ -51,16 +51,34 @@ When running `npm run test:watch`:
 
 ## Test Structure
 
-### Directory Layout
+### Directory Layout (Co-located Tests)
+
+Tests live next to the code they test for better maintainability:
 
 ```
-tests/
-  ├── array.test.ts       # Tests for array utilities
-  ├── string.test.ts      # Tests for string utilities
-  ├── number.test.ts      # Tests for number utilities
-  ├── slug.test.ts        # Tests for slug utilities
-  └── ...                 # Add more test files as needed
+src/
+  ├── array/
+  │   ├── index.ts
+  │   └── index.test.ts       ← Test file
+  ├── string/
+  │   ├── capitalize.ts
+  │   ├── capitalize.test.ts  ← Test file
+  │   ├── truncate.ts
+  │   ├── index.ts
+  │   └── ...
+  ├── number/
+  │   ├── index.ts
+  │   └── index.test.ts
+  └── slug/
+      ├── index.ts
+      └── index.test.ts
 ```
+
+**Benefits:**
+- ✅ Tests live with the code - easier to maintain
+- ✅ Simpler imports: `import { fn } from './index'`
+- ✅ Better visibility - see tests when browsing code
+- ✅ Modern standard - used by Vite, Vitest, React projects
 
 ### Writing Tests
 
@@ -68,7 +86,7 @@ Example test structure:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { yourFunction } from '../src/your-module';
+import { yourFunction } from './index'; // Simple relative import
 
 describe('your module', () => {
   describe('yourFunction', () => {

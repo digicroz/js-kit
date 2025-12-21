@@ -29,8 +29,8 @@ export default defineConfig({
       },
     },
 
-    // Include test files
-    include: ["tests/**/*.{test,spec}.{js,ts}", "src/**/*.{test,spec}.{js,ts}"],
+    // Include test files (co-located in src)
+    include: ["src/**/*.{test,spec}.{js,ts}"],
 
     // Exclude files
     exclude: ["node_modules", "dist", ".idea", ".git", ".cache"],

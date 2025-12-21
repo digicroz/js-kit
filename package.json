@@ -74,82 +74,72 @@
       "types": "./dist/index.d.ts",
       "react-native": "./dist/index.js",
       "browser": "./dist/index.js",
-      "module": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "import": "./dist/index.js",
-      "default": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "default": "./dist/index.js"
     },
     "./string": {
       "types": "./dist/string/index.d.ts",
       "react-native": "./dist/string/index.js",
-      "module": "./dist/string/index.js",
+      "require": "./dist/string/index.cjs",
       "import": "./dist/string/index.js",
-      "default": "./dist/string/index.js",
-      "require": "./dist/string/index.cjs"
+      "default": "./dist/string/index.js"
     },
     "./slug": {
       "types": "./dist/slug/index.d.ts",
       "react-native": "./dist/slug/index.js",
-      "module": "./dist/slug/index.js",
+      "require": "./dist/slug/index.cjs",
       "import": "./dist/slug/index.js",
-      "default": "./dist/slug/index.js",
-      "require": "./dist/slug/index.cjs"
+      "default": "./dist/slug/index.js"
     },
     "./array": {
       "types": "./dist/array/index.d.ts",
       "react-native": "./dist/array/index.js",
-      "module": "./dist/array/index.js",
+      "require": "./dist/array/index.cjs",
       "import": "./dist/array/index.js",
-      "default": "./dist/array/index.js",
-      "require": "./dist/array/index.cjs"
+      "default": "./dist/array/index.js"
     },
     "./number": {
       "types": "./dist/number/index.d.ts",
       "react-native": "./dist/number/index.js",
-      "module": "./dist/number/index.js",
+      "require": "./dist/number/index.cjs",
       "import": "./dist/number/index.js",
-      "default": "./dist/number/index.js",
-      "require": "./dist/number/index.cjs"
+      "default": "./dist/number/index.js"
     },
     "./sleep": {
       "types": "./dist/sleep/index.d.ts",
       "react-native": "./dist/sleep/index.js",
-      "module": "./dist/sleep/index.js",
+      "require": "./dist/sleep/index.cjs",
       "import": "./dist/sleep/index.js",
-      "default": "./dist/sleep/index.js",
-      "require": "./dist/sleep/index.cjs"
+      "default": "./dist/sleep/index.js"
     },
     "./time": {
       "types": "./dist/time/index.d.ts",
       "react-native": "./dist/time/index.js",
-      "module": "./dist/time/index.js",
+      "require": "./dist/time/index.cjs",
       "import": "./dist/time/index.js",
-      "default": "./dist/time/index.js",
-      "require": "./dist/time/index.cjs"
+      "default": "./dist/time/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "react-native": "./dist/utils/index.js",
-      "module": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs",
       "import": "./dist/utils/index.js",
-      "default": "./dist/utils/index.js",
-      "require": "./dist/utils/index.cjs"
+      "default": "./dist/utils/index.js"
     },
     "./types": {
       "types": "./dist/types/index.d.ts",
       "react-native": "./dist/types/index.js",
-      "module": "./dist/types/index.js",
+      "require": "./dist/types/index.cjs",
       "import": "./dist/types/index.js",
-      "default": "./dist/types/index.js",
-      "require": "./dist/types/index.cjs"
+      "default": "./dist/types/index.js"
     },
     "./enum": {
       "types": "./dist/enum/index.d.ts",
       "react-native": "./dist/enum/index.js",
-      "module": "./dist/enum/index.js",
+      "require": "./dist/enum/index.cjs",
       "import": "./dist/enum/index.js",
-      "default": "./dist/enum/index.js",
-      "require": "./dist/enum/index.cjs"
+      "default": "./dist/enum/index.js"
     }
   },
   "files": [

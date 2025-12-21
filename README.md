@@ -1,13 +1,29 @@
-# DXKit JS Kit
+# @digicroz/js-kit
 
-> **Modern TypeScript utility library with tree-shaking support** - Comprehensive collection of array, string, number, sleep, and time utilities for JavaScript and TypeScript projects.
+> **Modern TypeScript utility library with tree-shaking support** - Lightweight, fully-typed utilities for arrays, strings, numbers, slugs, enums, sleep, time, and environment detection. A modern alternative to lodash with zero dependencies and 100% test coverage.
 
-[![npm version](https://badge.fury.io/js/@digicroz/js-kit.svg)](https://www.npmjs.com/package/@digicroz/js-kit)
+[![npm version](https://img.shields.io/npm/v/@digicroz/js-kit.svg)](https://www.npmjs.com/package/@digicroz/js-kit)
+[![npm downloads](https://img.shields.io/npm/dm/@digicroz/js-kit.svg)](https://www.npmjs.com/package/@digicroz/js-kit)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@digicroz/js-kit)](https://bundlephobia.com/package/@digicroz/js-kit)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)](https://github.com/digicroz/js-kit)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Tree Shakable](https://img.shields.io/badge/Tree--Shakable-✓-brightgreen.svg)](https://webpack.js.org/guides/tree-shaking/)
 
-A collection of JavaScript/TypeScript utility functions for modern development.
+**@digicroz/js-kit** is a modern, lightweight TypeScript utility library designed for developers who need reliable, type-safe helper functions without the bloat. Perfect for React, Vue, Angular, Node.js, and any JavaScript/TypeScript project.
+
+**Keywords**: typescript utilities, javascript helpers, lodash alternative, tree-shakeable utils, zero dependencies, array utils, string utils, slug generator, enum utilities, case conversion, sleep promises, time utilities, environment detection
+
+## 🌟 Why Choose @digicroz/js-kit?
+
+- **🎯 Zero Dependencies** - No bloat, just pure utilities
+- **📦 Tiny Bundle Size** - Tree-shakeable ESM modules, import only what you need
+- **💯 100% Test Coverage** - 211 comprehensive tests ensure reliability
+- **🔒 Type-Safe** - Full TypeScript support with excellent IntelliSense
+- **⚡ Modern & Fast** - Built with modern JavaScript standards (ESM, CJS support)
+- **🌐 Universal** - Works in Node.js, browsers, React Native, and web workers
+- **🆚 Better than lodash** - Smaller, faster, more modern, with better TypeScript support
+- **📝 Well Documented** - Comprehensive JSDoc comments and examples
 
 ## 🌐 Environment Compatibility
 
@@ -20,7 +36,7 @@ This library is designed to work across multiple JavaScript environments:
 
 - 🚀 **TypeScript Support** - Full TypeScript support with type definitions
 - 📦 **Tree Shakable** - Import only what you need
-- 🧪 **Well Tested** - Comprehensive test coverage
+- 🧪 **100% Test Coverage** - 211 tests with comprehensive coverage across all modules
 - 📖 **Well Documented** - JSDoc comments for all functions
 - 🔧 **Modern Build** - Built with tsup for optimal bundling
 - 💡 **Excellent IDE Support** - Full auto-completion and IntelliSense support
@@ -63,6 +79,10 @@ import {
   convertToInt,
   getUnixTimestamp,
   isNodeEnvironment,
+  convertToSlug,
+  parseEnumValue,
+  toSnakeCase,
+  toCamelCase,
 } from "@digicroz/js-kit"
 
 // Array utilities
@@ -99,6 +119,22 @@ const timestamp = getUnixTimestamp()
 // Environment utilities
 const isNode = isNodeEnvironment()
 // Result: true if running in Node.js
+
+// Slug utilities
+const slug = convertToSlug("Hello World!")
+// Result: "hello-world"
+
+// Enum utilities
+const Status = ["active", "inactive"] as const
+const status = parseEnumValue(Status, "active")
+// Result: 'active'
+
+// Case conversion utilities
+const snakeCase = toSnakeCase("myVariableName")
+// Result: "my_variable_name"
+
+const camelCase = toCamelCase("my_variable_name")
+// Result: "myVariableName"
 ```
 
 ### Tree-shaking Support
@@ -108,11 +144,22 @@ You can also import individual functions for optimal tree-shaking:
 ```typescript
 // Universal utilities - individual imports
 import { chunk } from "@digicroz/js-kit/array"
-import { capitalize, truncateText } from "@digicroz/js-kit/string"
+import {
+  capitalize,
+  truncateText,
+  toSnakeCase,
+  toCamelCase,
+} from "@digicroz/js-kit/string"
 import { clamp, convertToInt } from "@digicroz/js-kit/number"
 import { sleep, sleepMs } from "@digicroz/js-kit/sleep"
 import { convertToSeconds, getUnixTimestamp } from "@digicroz/js-kit/time"
 import { isNodeEnvironment, getEnvironment } from "@digicroz/js-kit/utils"
+import {
+  convertToSlug,
+  isValidSlug,
+  generateUniqueSlug,
+} from "@digicroz/js-kit/slug"
+import { parseEnumValue, requireEnumValue } from "@digicroz/js-kit/enum"
 
 // Universal bundle (recommended)
 import {
@@ -128,15 +175,17 @@ import {
 
 ### ✅ Universal Modules (Node.js + Browser + Web Workers)
 
-| Module   | Functions                                                                                                                                    | Description                                    |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `array`  | `chunk`                                                                                                                                      | Split arrays into chunks of specified size     |
-| `string` | `capitalize`, `capitalizeWords`, `convertCamelToNormalCapitalized`, `randomStringWithFixedLength`, `truncateText`                            | String manipulation and formatting utilities   |
-| `number` | `clamp`, `inRange`, `convertToInt`, `convertToTwoDecimalInt`, `randomNumberWithFixedLength`                                                  | Number utilities including range operations    |
-| `sleep`  | `sleep`, `sleepMs`, `sleepSeconds`, `sleepMinutes`, `sleepUntil`                                                                             | Promise-based sleep with flexible time options |
-| `time`   | `convertToSeconds`, `getUnixTimestamp`, `getUnixTimestampMs`                                                                                 | Time conversion and timestamp utilities        |
-| `utils`  | `isNodeEnvironment`, `isBrowserEnvironment`, `isWebWorkerEnvironment`, `getEnvironment`, `assertNodeEnvironment`, `assertBrowserEnvironment` | Environment detection and assertions           |
-| `types`  | `Prettify`                                                                                                                                   | Utility types for TypeScript development       |
+| Module   | Functions                                                                                                                                                      | Description                                                    |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `array`  | `chunk`                                                                                                                                                        | Split arrays into chunks of specified size                     |
+| `string` | `capitalize`, `capitalizeWords`, `randomStringWithFixedLength`, `truncateText`, `toSnakeCase`, `toCamelCase`, `objectKeysToSnakeCase`, `objectKeysToCamelCase` | String manipulation, formatting, and case conversion utilities |
+| `number` | `clamp`, `inRange`, `convertToInt`, `convertToTwoDecimalInt`, `randomNumberWithFixedLength`                                                                    | Number utilities including range operations                    |
+| `slug`   | `isValidSlug`, `convertToSlug`, `generateUniqueSlug`, `zodSlugValidation`, `zodSlugTransform`, `slugSchema`, `autoSlugSchema`                                  | URL-safe slug generation and validation with Zod support       |
+| `enum`   | `parseEnumValue`, `requireEnumValue`                                                                                                                           | Type-safe enum parsing and validation                          |
+| `sleep`  | `sleep`, `sleepMs`, `sleepSeconds`, `sleepMinutes`, `sleepUntil`                                                                                               | Promise-based sleep with flexible time options                 |
+| `time`   | `convertToSeconds`, `getUnixTimestamp`, `getUnixTimestampMs`                                                                                                   | Time conversion and timestamp utilities                        |
+| `utils`  | `isNodeEnvironment`, `isBrowserEnvironment`, `isWebWorkerEnvironment`, `getEnvironment`, `assertNodeEnvironment`, `assertBrowserEnvironment`                   | Environment detection and assertions                           |
+| `types`  | `Prettify`                                                                                                                                                     | Utility types for TypeScript development                       |
 
 ## TypeScript Configuration
 
@@ -189,8 +238,10 @@ For comprehensive documentation with examples, advanced usage patterns, and best
 
 - **[🔢 Array Utilities](./src/array/array.md)** - Array manipulation and chunking utilities
 - **[🔢 Number Utilities](./src/number/number.md)** - Number clamping, conversion, and range validation
+- **[🔗 Slug Utilities](./src/slug/slug.md)** - URL-safe slug generation and validation
+- **[📋 Enum Utilities](./src/enum/enum.md)** - Type-safe enum parsing and validation
 - **[⏰ Sleep Utilities](./src/sleep/sleep.md)** - Advanced sleep and timing functions
-- **[📝 String Utilities](./src/string/string.md)** - String manipulation and formatting
+- **[📝 String Utilities](./src/string/string.md)** - String manipulation, formatting, and case conversion
 - **[⏰ Time Utilities](./src/time/time.md)** - Time conversion and duration utilities
 - **[🌐 Environment Utilities](./src/utils/utils.md)** - Environment detection and cross-platform utilities
 
@@ -204,9 +255,12 @@ For comprehensive documentation with examples, advanced usage patterns, and best
 
 - `capitalize(str: string): string` - Capitalizes the first letter of a string
 - `capitalizeWords(str: string): string` - Capitalizes the first letter of each word
-- `convertCamelToNormalCapitalized(str: string): string` - Converts camelCase to Normal Capitalized format
 - `randomStringWithFixedLength(length: number): string` - Generates a random string with fixed length
 - `truncateText(options: TruncateTextOptions): string` - Truncates text with customizable options
+- `toSnakeCase<T extends string>(value: T): ToSnakeCaseResult<T>` - Converts camelCase to snake_case
+- `toCamelCase<T extends string>(str: T): ToCamelCaseResult<T>` - Converts snake_case to camelCase
+- `objectKeysToSnakeCase<T>(obj: T): ObjectKeysToSnakeCaseResult<T>` - Recursively converts object keys to snake_case
+- `objectKeysToCamelCase<T>(obj: T): ObjectKeysToCamelCaseResult<T>` - Recursively converts object keys to camelCase
 
 #### Number Utilities
 
@@ -215,6 +269,21 @@ For comprehensive documentation with examples, advanced usage patterns, and best
 - `convertToInt(data: any): number` - Safely converts any value to integer
 - `convertToTwoDecimalInt(data: any): number` - Converts to number with 2 decimal places
 - `randomNumberWithFixedLength(length: number): number` - Generates random number with fixed length
+
+#### Slug Utilities
+
+- `isValidSlug(slug: string): boolean` - Validates if a string is a valid URL slug
+- `convertToSlug(text: string, options?): string` - Converts text to a URL-safe slug
+- `generateUniqueSlug(baseText: string, existingSlugs: string[]): string` - Generates a unique slug
+- `zodSlugValidation(message?: string)` - Zod validation for slug format
+- `zodSlugTransform(options?)` - Zod transform that converts text to slug
+- `slugSchema` - Pre-configured Zod schemas for slug validation
+- `autoSlugSchema` - Pre-configured Zod schemas for automatic slug generation
+
+#### Enum Utilities
+
+- `parseEnumValue<T>(enumArray: T, value: string): T[number] | undefined` - Safely parses enum value
+- `requireEnumValue<T>(enumArray: T, value: string): T[number]` - Parses enum value or throws error
 
 #### Sleep Utilities
 
@@ -260,8 +329,44 @@ npm run type-check
 
 # Run tests
 npm run test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
 ```
 
-## License
+## 🤝 Contributing
 
-MIT
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 👤 Author
+
+**Adarsh Hatkar**
+
+- GitHub: [@AdarshHatkar](https://github.com/AdarshHatkar)
+- Organization: [@digicroz](https://github.com/digicroz)
+
+## 🔗 Links
+
+- [NPM Package](https://www.npmjs.com/package/@digicroz/js-kit)
+- [GitHub Repository](https://github.com/digicroz/js-kit)
+- [Issue Tracker](https://github.com/digicroz/js-kit/issues)
+- [Changelog](https://github.com/digicroz/js-kit/releases)
+
+## ⭐ Show Your Support
+
+Give a ⭐️ if this project helped you!
+
+## 📄 License
+
+MIT © [Adarsh Hatkar](https://github.com/AdarshHatkar)
+
+Copyright (c) 2025 Adarsh Hatkar

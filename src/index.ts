@@ -5,6 +5,9 @@ export * from "./array"
 // String utilities
 export * from "./string"
 
+// Slug utilities
+export * from "./slug"
+
 // Number utilities
 export * from "./number"
 

@@ -179,7 +179,12 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "npx rimraf dist",
-    "prepublishOnly": "npm run clean && npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
+    "prepublishOnly": "npm run clean && npm run test && npm run build",
     "release:patch": "npm version patch",
     "postversion": "git push && git push --tags && npm publish",
     "link": "npm run build && npm link",
@@ -187,8 +192,11 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "tsup": "^8.5.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "vitest": "^4.0.16"
   },
   "dependencies": {
     "ulidx": "^2.4.1"

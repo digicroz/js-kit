@@ -17,8 +17,11 @@ export default defineConfig({
         "dist/",
         "**/*.config.ts",
         "**/*.d.ts",
-        "**/index.ts", // Usually just re-exports
-        "src/types/**", // Type definitions
+        "**/*.test.ts",
+        "**/*.spec.ts",
+        "src/types/**", // Type definitions only
+        "src/index.ts", // Main entry point - just re-exports
+        "src/string/caseConversion/index.ts", // Just re-exports
       ],
       // Set coverage thresholds (adjust as needed)
       thresholds: {

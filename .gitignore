@@ -165,10 +165,10 @@ tramp
 .\#*
 
 # Test files
-*.test.js
-*.test.ts
-*.spec.js
-*.spec.ts
+# *.test.js
+# *.test.ts
+# *.spec.js
+# *.spec.ts
 test-results/
 coverage/
 

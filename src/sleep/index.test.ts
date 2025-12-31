@@ -59,10 +59,14 @@ describe("sleep utilities", () => {
       )
     })
 
-    it("should throw error when no delay parameter specified", async () => {
-      await expect(
-        sleep({ milliseconds: 0, seconds: 0, minutes: 0 })
-      ).rejects.toThrow("At least one delay parameter must be specified")
+    it("should resolve immediately when 0 delay is specified", async () => {
+      const promise = sleep({ milliseconds: 0, seconds: 0, minutes: 0 })
+      await expect(promise).resolves.toBeUndefined()
+    })
+
+    it("should resolve immediately when milliseconds is 0", async () => {
+      const promise = sleep({ milliseconds: 0 })
+      await expect(promise).resolves.toBeUndefined()
     })
 
     it("should throw error for delay too large", async () => {

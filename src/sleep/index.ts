@@ -97,7 +97,7 @@ export const sleep = (params: TSleepParams): TSleepReturn => {
                 }
 
                 // If no valid delay was specified
-                if (delayMs === 0 && !params.milliseconds && !params.seconds && !params.minutes) {
+                if (delayMs === 0 && params.milliseconds === undefined && params.seconds === undefined && params.minutes === undefined) {
                     throw new Error('At least one delay parameter must be specified');
                 }
             }
@@ -106,6 +106,11 @@ export const sleep = (params: TSleepParams): TSleepReturn => {
             const MAX_DELAY = 2147483647; // Maximum value for setTimeout
             if (delayMs > MAX_DELAY) {
                 throw new Error(`Delay too large. Maximum delay is ${MAX_DELAY}ms`);
+            }
+
+            if (delayMs === 0) {
+                resolve();
+                return;
             }
 
             setTimeout(resolve, Math.floor(delayMs));

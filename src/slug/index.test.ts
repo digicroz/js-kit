@@ -127,6 +127,33 @@ describe("slug utilities", () => {
     it("should handle underscores", () => {
       expect(convertToSlug("Hello_World")).toBe("hello-world")
     })
+
+    describe("with allowDots option", () => {
+      it("should preserve dots when allowDots is true", () => {
+        expect(convertToSlug("My File.txt", { allowDots: true })).toBe("my-file.txt")
+        expect(convertToSlug("Archive.tar.gz", { allowDots: true })).toBe("archive.tar.gz")
+      })
+
+      it("should replace dots with separator when allowDots is false", () => {
+        expect(convertToSlug("file.name", { allowDots: false })).toBe("file-name")
+        expect(convertToSlug("www.example.com", { allowDots: false })).toBe("www-example-com")
+      })
+
+      it("should collapse mixed separators and dots", () => {
+        // Preference for dot if allowed
+        expect(convertToSlug("file.-name", { allowDots: true })).toBe("file.name")
+        expect(convertToSlug("file-.name", { allowDots: true })).toBe("file.name")
+        expect(convertToSlug("file..name", { allowDots: true })).toBe("file.name")
+        
+        // Regular collapse when not allowed
+        expect(convertToSlug("file..name", { allowDots: false })).toBe("file-name")
+      })
+
+      it("should trim leading/trailing dots", () => {
+        expect(convertToSlug(".file.", { allowDots: true })).toBe("file")
+        expect(convertToSlug(" . file . ", { allowDots: true })).toBe("file")
+      })
+    })
   })
 
   describe("generateUniqueSlug", () => {

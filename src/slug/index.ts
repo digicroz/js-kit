@@ -71,29 +71,50 @@ export function isValidSlug(
  */
 export function convertToSlug(
   text: string,
-  options: { separator?: string } = {}
+  options: { separator?: string; allowDots?: boolean } = {}
 ): string {
-  const { separator = '-' } = options;
+  const { separator = '-', allowDots = false } = options;
 
   if (!text || typeof text !== 'string') {
     return '';
   }
 
-  return text
+  // Escape separator for use in regex char class
+  const escapedSeparator = separator.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  let slug = text
     .toString()
     .toLowerCase()
     .trim()
     // Remove accents and diacritics
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    // Replace spaces, underscores, and other common separators with separator
+    .replace(/[\u0300-\u036f]/g, '');
+
+  if (!allowDots) {
+    // Replace dots with separator
+    slug = slug.replace(/\./g, separator);
+  }
+
+  slug = slug
+    // Replace spaces, underscores with separator
     .replace(/[\s_]+/g, separator)
-    // Remove all non-alphanumeric characters except the separator
-    .replace(new RegExp(`[^a-z0-9${separator}]`, 'g'), '')
+    // Remove all non-alphanumeric characters except the separator (and dot if allowed)
+    .replace(new RegExp(`[^a-z0-9${escapedSeparator}${allowDots ? '\\.' : ''}]`, 'g'), '');
+
+  if (allowDots) {
+    // Collapse consecutive separators/dots
+    // If sequence contains a dot, we generally want to keep it as a dot (e.g. file.-extension -> file.extension)
+    slug = slug.replace(new RegExp(`[${escapedSeparator}.]+`, 'g'), (match) => {
+      return match.includes('.') ? '.' : separator;
+    });
+  } else {
     // Replace multiple consecutive separators with single separator
-    .replace(new RegExp(`${separator}+`, 'g'), separator)
-    // Remove leading and trailing separators
-    .replace(new RegExp(`^${separator}+|${separator}+$`, 'g'), '');
+    slug = slug.replace(new RegExp(`${escapedSeparator}+`, 'g'), separator);
+  }
+  
+  // Remove leading and trailing separators (and dots)
+  const trimRegex = new RegExp(`^[${escapedSeparator}${allowDots ? '\\.' : ''}]+|[${escapedSeparator}${allowDots ? '\\.' : ''}]+$`, 'g');
+  return slug.replace(trimRegex, '');
 }
 
 /**
@@ -178,6 +199,7 @@ export function zodSlugValidation(
  * 
  * @param options - Optional configuration
  * @param options.separator - Character to use as separator (default: '-')
+ * @param options.allowDots - Whether to allow dots in the slug (default: false)
  * @returns Transform function for Zod
  * 
  * @example
@@ -194,7 +216,7 @@ export function zodSlugValidation(
  * // { title: 'Hello', slug: 'hello-world' }
  * ```
  */
-export function zodSlugTransform(options?: { separator?: string }) {
+export function zodSlugTransform(options?: { separator?: string; allowDots?: boolean }) {
   return (val: string) => convertToSlug(val, options);
 }
 

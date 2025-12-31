@@ -15,15 +15,31 @@
  * isValidSlug('hello_world') // false (underscore not allowed)
  * ```
  */
-export function isValidSlug(slug: string): boolean {
+export function isValidSlug(
+  slug: string,
+  options: { allowDots?: boolean } = {}
+): boolean {
   if (!slug || typeof slug !== 'string') {
     return false;
   }
 
+  const { allowDots = false } = options;
+
   // Check if slug matches the pattern:
   // - starts with alphanumeric
   // - ends with alphanumeric
-  // - contains only lowercase alphanumeric and single hyphens
+  // - contains only lowercase alphanumeric and single hyphens (and dots if allowed)
+  // - no consecutive separators (hyphens or dots)
+  
+  if (allowDots) {
+    // pattern allowing dots:
+    // starts with alphanumeric
+    // middle: alphanumeric or single hyphen/dot followed by alphanumeric
+    // ends with alphanumeric
+    const slugWithDotsPattern = /^[a-z0-9]+(?:[-.][a-z0-9]+)*$/;
+    return slugWithDotsPattern.test(slug);
+  }
+
   const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
   
   return slugPattern.test(slug);
@@ -122,7 +138,7 @@ export function generateUniqueSlug(
  * Creates a Zod refinement function for slug validation
  * Use with z.string().refine() or z.string().superRefine()
  * 
- * @param message - Custom error message (optional)
+ * @param optionsOrMessage - Custom error message or options object
  * @returns Refinement function for Zod
  * 
  * @example
@@ -130,15 +146,30 @@ export function generateUniqueSlug(
  * import { z } from 'zod';
  * import { zodSlugValidation } from '@digicroz/js-kit';
  * 
+ * // Basic usage
  * const schema = z.object({
  *   slug: z.string().refine(zodSlugValidation(), {
  *     message: 'Invalid slug format'
  *   })
  * });
+ * 
+ * // Allow dots (e.g. for filenames)
+ * const fileSchema = z.object({
+ *   filename: z.string().refine(zodSlugValidation({ allowDots: true }), {
+ *     message: 'Invalid filename format'
+ *   })
+ * });
  * ```
  */
-export function zodSlugValidation(message?: string) {
-  return (val: string) => isValidSlug(val);
+export function zodSlugValidation(
+  optionsOrMessage?: string | { message?: string; allowDots?: boolean }
+) {
+  const options =
+    typeof optionsOrMessage === 'string'
+      ? { message: optionsOrMessage }
+      : optionsOrMessage || {};
+      
+  return (val: string) => isValidSlug(val, { allowDots: options.allowDots });
 }
 
 /**
@@ -189,12 +220,23 @@ export const slugSchema = {
    * Get a Zod string schema that validates slug format
    * Requires zod to be installed: npm install zod
    */
-  create: (customMessage?: string) => {
+  create: (
+    customMessageOrOptions?: string | { message?: string; allowDots?: boolean }
+  ) => {
     // Dynamic import to avoid making zod a required dependency
+    const options =
+      typeof customMessageOrOptions === 'string'
+        ? { message: customMessageOrOptions }
+        : customMessageOrOptions || {};
+        
+    const message =
+      options.message ||
+      'Must be a valid slug (lowercase, alphanumeric, and hyphens only, no consecutive hyphens)';
+
     return {
       _type: 'slug-validator' as const,
-      validate: zodSlugValidation(customMessage),
-      message: customMessage || 'Must be a valid slug (lowercase, alphanumeric, and hyphens only, no consecutive hyphens)'
+      validate: zodSlugValidation(options),
+      message
     };
   }
 };

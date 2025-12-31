@@ -61,6 +61,30 @@ describe("slug utilities", () => {
       expect(isValidSlug("a")).toBe(true)
       expect(isValidSlug("1")).toBe(true)
     })
+
+    describe("with allowDots option", () => {
+      it("should valid slug with dots", () => {
+        expect(isValidSlug("file.txt", { allowDots: true })).toBe(true)
+        expect(isValidSlug("archive.tar.gz", { allowDots: true })).toBe(true)
+        expect(isValidSlug("version.1.0.0", { allowDots: true })).toBe(true)
+      })
+
+      it("should reject dots when allowDots is false (default)", () => {
+        expect(isValidSlug("file.txt")).toBe(false)
+        expect(isValidSlug("file.txt", { allowDots: false })).toBe(false)
+      })
+
+      it("should reject consecutive separators including dots", () => {
+        expect(isValidSlug("file..txt", { allowDots: true })).toBe(false)
+        expect(isValidSlug("file.-txt", { allowDots: true })).toBe(false)
+        expect(isValidSlug("file-.txt", { allowDots: true })).toBe(false)
+      })
+
+      it("should reject leading/trailing dots", () => {
+        expect(isValidSlug(".file", { allowDots: true })).toBe(false)
+        expect(isValidSlug("file.", { allowDots: true })).toBe(false)
+      })
+    })
   })
 
   describe("convertToSlug", () => {

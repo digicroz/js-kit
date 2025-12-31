@@ -25,3 +25,6 @@ export * from "./types"
 
 // Enum utilities
 export * from "./enum"
+
+// Name validation utilities
+export * from "./name"

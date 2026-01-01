@@ -55,6 +55,18 @@ describe("name utilities", () => {
         normalizeName("  Test   File.text    ", { allowedSpecialChars: [" ", "."] })
       ).toBe("Test File.text");
     });
+
+    it("should handle hyphens in allowedSpecialChars correctly (bug fix regression)", () => {
+      const input = "WhatsApp Image 2025-11-29 at 23.42.33.jpeg";
+      const options = {
+          allowedSpecialChars: [" ", "-", "_", "."],
+      };
+      // Should preserve alphanumeric characters and allow allowed special chars
+      // And collapse consecutive ones.
+      // "WhatsApp Image 2025-11-29 at 23.42.33.jpeg"
+      // Spaces, dashes, dots are allowed.
+      expect(normalizeName(input, options)).toBe("WhatsApp Image 2025-11-29 at 23.42.33.jpeg");
+    });
   });
 
   describe("zod integration", () => {

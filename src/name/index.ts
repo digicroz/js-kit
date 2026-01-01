@@ -24,7 +24,7 @@ export function isValidName(
 
   // Escape special chars for regex
   const escapedChars = allowedSpecialChars
-    .map((char) => char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .map((char) => char.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&'))
     .join('');
 
   // Regex construction:
@@ -66,7 +66,7 @@ export function normalizeName(
 
   const { allowedSpecialChars = [' '] } = options;
   const escapedChars = allowedSpecialChars
-    .map((char) => char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .map((char) => char.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&'))
     .join('');
 
   // 1. Trim

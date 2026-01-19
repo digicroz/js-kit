@@ -31,3 +31,6 @@ export * from "./name"
 
 // Standard Response utilities
 export * from "./std-response"
+
+// Base64 utilities
+export * from "./base64"

@@ -65,6 +65,9 @@
       ],
       "enum": [
         "./dist/enum/index.d.ts"
+      ],
+      "std-response": [
+        "./dist/std-response/index.d.ts"
       ]
     }
   },
@@ -140,6 +143,13 @@
       "require": "./dist/enum/index.cjs",
       "import": "./dist/enum/index.js",
       "default": "./dist/enum/index.js"
+    },
+    "./std-response": {
+      "types": "./dist/std-response/index.d.ts",
+      "react-native": "./dist/std-response/index.js",
+      "require": "./dist/std-response/index.cjs",
+      "import": "./dist/std-response/index.js",
+      "default": "./dist/std-response/index.js"
     }
   },
   "files": [

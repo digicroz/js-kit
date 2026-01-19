@@ -185,6 +185,7 @@ import {
 | `sleep`  | `sleep`, `sleepMs`, `sleepSeconds`, `sleepMinutes`, `sleepUntil`                                                                                               | Promise-based sleep with flexible time options                 |
 | `time`   | `convertToSeconds`, `getUnixTimestamp`, `getUnixTimestampMs`                                                                                                   | Time conversion and timestamp utilities                        |
 | `utils`  | `isNodeEnvironment`, `isBrowserEnvironment`, `isWebWorkerEnvironment`, `getEnvironment`, `assertNodeEnvironment`, `assertBrowserEnvironment`                   | Environment detection and assertions                           |
+| `std-response` | `stdResponse.success`, `stdResponse.error`, `StdSuccess`, `StdError`, `StdResponse` | Standardized API response types and utilities |
 | `types`  | `Prettify`                                                                                                                                                     | Utility types for TypeScript development                       |
 
 ## TypeScript Configuration
@@ -244,6 +245,7 @@ For comprehensive documentation with examples, advanced usage patterns, and best
 - **[📝 String Utilities](./src/string/string.md)** - String manipulation, formatting, and case conversion
 - **[⏰ Time Utilities](./src/time/time.md)** - Time conversion and duration utilities
 - **[🌐 Environment Utilities](./src/utils/utils.md)** - Environment detection and cross-platform utilities
+- **[📦 Standard Response Utilities](./src/std-response/std-response.md)** - Standardized API response types and helper functions
 
 ### Quick Reference
 
@@ -306,7 +308,13 @@ For comprehensive documentation with examples, advanced usage patterns, and best
 - `isWebWorkerEnvironment(): boolean` - Checks if running in web worker
 - `getEnvironment(): string` - Gets current environment type
 - `assertNodeEnvironment(): void` - Asserts Node.js environment
+- `assertNodeEnvironment(): void` - Asserts Node.js environment
 - `assertBrowserEnvironment(): void` - Asserts browser environment
+
+#### Standard Response Utilities
+
+- `stdResponse.success<T>(result: T, message?: string): StdSuccess<T>` - Creates a success response
+- `stdResponse.error<E>(code: E, message?: string): StdError<E>` - Creates an error response
 
 #### Type Utilities
 

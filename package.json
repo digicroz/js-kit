@@ -198,7 +198,5 @@
     "typescript": "^5.4.0",
     "vitest": "^4.0.16"
   },
-  "dependencies": {
-    "ulidx": "^2.4.1"
-  }
+  "dependencies": {}
 }

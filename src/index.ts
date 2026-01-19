@@ -34,3 +34,6 @@ export * from "./std-response"
 
 // Base64 utilities
 export * from "./base64"
+
+// File utilities
+export * from "./file"

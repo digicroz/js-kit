@@ -41,5 +41,21 @@ describe("stdResponse", () => {
         },
       });
     });
+
+    it("should create an error response with details", () => {
+      const code = "validation_error";
+      const message = "Invalid input";
+      const details = { field: "email", reason: "invalid format" };
+      const response = stdResponse.error(code, message, details);
+
+      expect(response).toEqual({
+        status: "error",
+        error: {
+          code,
+          message,
+          details,
+        },
+      });
+    });
   });
 });

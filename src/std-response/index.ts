@@ -3,17 +3,18 @@ export type StdSuccess<T> = {
   result: T;
 };
 
-export type StdError<E extends string | number> = {
+export type StdError<E extends string | number = string, D = undefined> = {
   status: "error";
   error: {
     code: E;
     message?: string;
+    details?: D;
   };
 };
 
-export type StdResponse<T, E extends string | number> =
+export type StdResponse<T, E extends string | number = string, D = undefined> =
   | StdSuccess<T>
-  | StdError<E>;
+  | StdError<E, D>;
 
 export const stdResponse = Object.freeze({
   success: <T>(result: T): StdSuccess<T> => ({
@@ -21,11 +22,12 @@ export const stdResponse = Object.freeze({
     result,
   }),
 
-  error: <E extends string | number>(
+  error: <E extends string | number, D = undefined>(
     code: E,
-    message?: string
-  ): StdError<E> => ({
+    message?: string,
+    details?: D,
+  ): StdError<E, D> => ({
     status: "error",
-    error: { code, message },
+    error: { code, message, details },
   }),
 });

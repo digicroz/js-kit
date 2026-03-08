@@ -20,40 +20,29 @@ npm install @digicroz/js-kit
 ### Importing
 
 ```typescript
-import { 
-  stdResponse, 
-  StdSuccess, 
-  StdError, 
-  StdResponse 
-} from "@digicroz/js-kit/std-response"
+import {
+  stdResponse,
+  StdSuccess,
+  StdError,
+  StdResponse,
+} from "@digicroz/js-kit/std-response";
 
 // Or from the main package
-import { stdResponse } from "@digicroz/js-kit"
+import { stdResponse } from "@digicroz/js-kit";
 ```
 
-### creating Responses
+### Creating Responses
 
 #### Success Response
 
 Use `stdResponse.success` to create a standard success response.
 
 ```typescript
-// Simple success response
 const response = stdResponse.success({ id: 1, name: "User" });
 /*
 {
   status: "success",
   result: { id: 1, name: "User" }
-}
-*/
-
-// Success response with message
-const response = stdResponse.success({ id: 1 }, "User created successfully");
-/*
-{
-  status: "success",
-  message: "User created successfully",
-  result: { id: 1 }
 }
 */
 ```
@@ -63,45 +52,70 @@ const response = stdResponse.success({ id: 1 }, "User created successfully");
 Use `stdResponse.error` to create a standard error response.
 
 ```typescript
-// Simple error response
-const error = stdResponse.error("INTERNAL_ERROR");
+const error = stdResponse.error("internal_error");
 /*
 {
   status: "error",
   error: {
-    code: "INTERNAL_ERROR"
+    code: "internal_error"
   }
 }
 */
 
-// Error response with message
-const error = stdResponse.error("VALIDATION_ERROR", "Invalid input");
+const error = stdResponse.error("validation_error", "Invalid input");
 /*
 {
   status: "error",
   error: {
-    code: "VALIDATION_ERROR",
+    code: "validation_error",
     message: "Invalid input"
   }
 }
 */
 
-// Error response with additional details
-const error = stdResponse.error(
-  "VALIDATION_ERROR", 
-  "Invalid input", 
-  { field: "email", reason: "invalid format" }
-);
+const error = stdResponse.error("validation_error", "Invalid input", {
+  field: "email",
+  reason: "invalid format",
+});
 /*
 {
   status: "error",
   error: {
-    code: "VALIDATION_ERROR",
-    message: "Invalid input"
-  },
-  details: { field: "email", reason: "invalid format" }
+    code: "validation_error",
+    message: "Invalid input",
+    details: { field: "email", reason: "invalid format" }
+  }
 }
 */
+```
+
+#### Narrowing Error Details by Code
+
+Each error code can have its own details type for full narrowing support.
+
+```typescript
+type ApiError =
+  | StdError<"validation_error", { field: string; reason: string }>
+  | StdError<"not_found", { resource: string }>
+  | StdError<"internal_error">;
+
+type ApiResponse = StdSuccess<{ id: number }> | ApiError;
+
+function handle(res: ApiResponse) {
+  if (res.status === "error") {
+    switch (res.error.code) {
+      case "validation_error":
+        res.error.details; // { field: string; reason: string }
+        break;
+      case "not_found":
+        res.error.details; // { resource: string }
+        break;
+      case "internal_error":
+        res.error.details; // undefined
+        break;
+    }
+  }
+}
 ```
 
 ## Type Definitions
@@ -113,32 +127,31 @@ Represents a successful operation.
 ```typescript
 type StdSuccess<T> = {
   status: "success";
-  message?: string;
   result: T;
-}
+};
 ```
 
-### `StdError<E>`
+### `StdError<E, D>`
 
 Represents a failed operation.
 
 ```typescript
-type StdError<E extends string | number = string> = {
+type StdError<E extends string | number = string, D = undefined> = {
   status: "error";
   error: {
     code: E;
     message?: string;
+    details?: D;
   };
-  details?: unknown;
-}
+};
 ```
 
-### `StdResponse<T, E>`
+### `StdResponse<T, E, D>`
 
 Union type of `StdSuccess` and `StdError`.
 
 ```typescript
-type StdResponse<T, E extends string | number = string> = 
-  | StdSuccess<T> 
-  | StdError<E>;
+type StdResponse<T, E extends string | number = string, D = undefined> =
+  | StdSuccess<T>
+  | StdError<E, D>;
 ```

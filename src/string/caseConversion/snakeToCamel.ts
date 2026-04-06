@@ -42,7 +42,10 @@ export function objectKeysToCamelCase<T extends Record<string, any>>(
   obj: T
 ): ObjectKeysToCamelCaseResult<T> {
   if (obj === null || typeof obj !== "object") return obj as any
-
+  if (obj instanceof Date) {
+    return obj as any
+  }
+  
   if (Array.isArray(obj)) {
     return obj.map(objectKeysToCamelCase) as any
   }

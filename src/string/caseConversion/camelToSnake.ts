@@ -48,7 +48,9 @@ export function objectKeysToSnakeCase<T extends Record<string, any>>(
   obj: T
 ): ObjectKeysToSnakeCaseResult<T> {
   if (obj === null || typeof obj !== "object") return obj as any
-
+  if (obj instanceof Date) {
+  return obj as any
+}
   if (Array.isArray(obj)) {
     return obj.map(objectKeysToSnakeCase) as any
   }

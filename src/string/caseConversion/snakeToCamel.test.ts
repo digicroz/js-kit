@@ -68,6 +68,10 @@ describe("string/caseConversion/snakeToCamel", () => {
     it("should handle empty object", () => {
       expect(objectKeysToCamelCase({})).toEqual({})
     })
+     it("should handle Date object", () => {
+          const date = new Date()
+          expect(objectKeysToCamelCase({ date })).toEqual({ date })
+        })
 
     it("should handle deep nesting", () => {
       const input = {

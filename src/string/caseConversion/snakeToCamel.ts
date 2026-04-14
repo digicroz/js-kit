@@ -2,57 +2,98 @@
 // Convert snake_case string to camelCase
 type SnakeToCamel<S extends string> = S extends `${infer T}_${infer U}`
   ? `${T}${Capitalize<SnakeToCamel<U>>}`
-  : S
+  : S;
 
-export type ToCamelCaseResult<T extends string> = SnakeToCamel<T>
+export type ToCamelCaseResult<T extends string> = SnakeToCamel<T>;
 
-// Convert object keys recursively
-export type ObjectKeysToCamelCaseResult<T> = {
-  [K in keyof T as SnakeToCamel<
-    Extract<K, string>
-  >]: T[K] extends readonly any[]
-    ? ObjectKeysToCamelCaseResult<T[K][number]>[]
-    : T[K] extends object
-    ? ObjectKeysToCamelCaseResult<T[K]>
-    : T[K]
-}
+export type ObjectKeysToCamelCaseResult<
+  T,
+  IgnoredPaths extends string = never,
+  CurrentPath extends string = ""
+> = T extends readonly any[]
+  ? ObjectKeysToCamelCaseResult<T[number], IgnoredPaths, CurrentPath>[]
+  : T extends Date | RegExp | Function
+    ? T
+    : T extends object
+      ? {
+          [K in keyof T as SnakeToCamel<Extract<K, string>>]:
+            `${CurrentPath}${CurrentPath extends "" ? "" : "."}${Extract<K, string>}` extends IgnoredPaths
+              ? T[K] 
+              : ObjectKeysToCamelCaseResult<
+                  T[K],
+                  IgnoredPaths,
+                  `${CurrentPath}${CurrentPath extends "" ? "" : "."}${Extract<K, string>}`
+                >;
+        }
+      : T;
 
 /**
  * Converts a snake_case string to camelCase
- *
- * @example
- * toCamelCase('my_variable') // 'myVariable'
- * toCamelCase('user_first_name') // 'userFirstName'
  */
 export const toCamelCase = <T extends string>(str: T): ToCamelCaseResult<T> => {
   return str.replace(/_([a-z])/g, (_, char) =>
-    char.toUpperCase()
-  ) as ToCamelCaseResult<T>
-}
+    char.toUpperCase(),
+  ) as ToCamelCaseResult<T>;
+};
+
+
+type Options<Paths extends string = string> = {
+  ignoredPaths?: readonly Paths[];
+};
 
 /**
  * Converts all keys in an object from snake_case to camelCase recursively
- * Handles nested objects and arrays
- *
- * @example
- * objectKeysToCamelCase({ first_name: 'John', user_info: { phone_number: '123' } })
- * // { firstName: 'John', userInfo: { phoneNumber: '123' } }
  */
-export function objectKeysToCamelCase<T extends Record<string, any>>(
-  obj: T
-): ObjectKeysToCamelCaseResult<T> {
-  if (obj === null || typeof obj !== "object") return obj as any
-  if (obj instanceof Date) {
-    return obj as any
+export function objectKeysToCamelCase<
+  T extends Record<string, any>,
+  IgnoredPaths extends string = never
+>(
+  obj: T,
+  options?: Options<IgnoredPaths>,
+  currentPath: string = ""
+): ObjectKeysToCamelCaseResult<T, IgnoredPaths> {
+  if (obj === null || typeof obj !== "object") return obj as any;
+
+  if (
+    obj instanceof Date ||
+    obj instanceof RegExp ||
+    typeof obj === "function"
+  ) {
+    return obj as any;
   }
-  
+
   if (Array.isArray(obj)) {
-    return obj.map(objectKeysToCamelCase) as any
+    return obj.map((item, index) =>
+      objectKeysToCamelCase(
+        item,
+        options,
+        `${currentPath}[${index}]`
+      )
+    ) as any;
   }
 
   return Object.keys(obj).reduce((acc, key) => {
-    const camelKey = toCamelCase(key)
-    acc[camelKey] = objectKeysToCamelCase(obj[key])
-    return acc
-  }, {} as any)
+    const camelKey = toCamelCase(key);
+
+    const nextPath = currentPath
+      ? `${currentPath}.${key}`
+      : key;
+
+    if (
+      options?.ignoredPaths?.some(path =>
+        nextPath === path || nextPath.startsWith(path + ".")
+      )
+    ) {
+      acc[camelKey] = obj[key];
+      return acc;
+    }
+
+    acc[camelKey] = objectKeysToCamelCase(
+      obj[key],
+      options,
+      nextPath
+    );
+
+    return acc;
+  }, {} as any);
 }

@@ -1,3 +1,5 @@
+import { secureRandom } from "../utils/secureRandom";
+
 /**
  * Clamps a number within the inclusive lower and upper bounds
  * @param number - The number to clamp
@@ -85,6 +87,6 @@ export const randomNumberWithFixedLength = (length: number): number => {
     throw new Error("Length must be a positive integer.");
   }
   return Math.floor(
-    Math.pow(10, length - 1) + Math.random() * (9 * Math.pow(10, length - 1)),
+    Math.pow(10, length - 1) + secureRandom() * (9 * Math.pow(10, length - 1)),
   );
 };
